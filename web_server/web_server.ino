@@ -5,7 +5,7 @@
 #include <ESP8266WiFi.h>
 #include <Wire.h>                       // Wire Library for i2c Teensy(Master) to communicate with the ESP8266 (Slave)
 
-#include "credentials.h"
+#include "credentials.h"    //SSID and PASSWORD to keep private information away from git
 
 const char* hostname = WIFI_HOSTNAME;
 const char* ssid     = WIFI_SSID;
@@ -14,7 +14,7 @@ const char* password = WIFI_PASSWORD;
 WiFiServer server(80);
 byte x = 0;  //i2c counter
 
-// prepare a web page to be send to a client (web browser)
+
 String prepareHtmlPage()
 {
   String htmlPage =
@@ -30,6 +30,7 @@ String prepareHtmlPage()
             "\r\n";
   return htmlPage;
 }
+
 
 void setup() {
   // Setup serial debug port

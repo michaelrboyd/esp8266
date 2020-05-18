@@ -17,6 +17,8 @@
 const int16_t I2C_MASTER = 0x42;
 const int16_t I2C_SLAVE = 0x08;
 
+
+
 void setup() {
   Wire.begin(SDA_PIN, SCL_PIN, I2C_MASTER); // join i2c bus (address optional for master)
   Serial.begin(115200);  // start serial for output
@@ -25,22 +27,25 @@ void setup() {
 }
 
 byte x = 0;
+char myMsg[8] = "x is ";
 
 void loop() {
   using periodic = esp8266::polledTimeout::periodicMs;
   static periodic nextPing(1000);
 
   if (nextPing) {
+    Serial.print("ESP8266..Master Writer");
     Wire.beginTransmission(I2C_SLAVE); // transmit to device #8
-    Wire.write("x is ");        // sends five bytes
+    Wire.write(myMsg, sizeof(myMsg));        // sends five bytes
     Wire.write(x);              // sends one byte
+    Serial.print(myMsg);
     Wire.endTransmission();    // stop transmitting
 
-    Serial.print(SDA_PIN);
+/*    Serial.print(SDA_PIN);
     Serial.print(SCL_PIN);
     Serial.print(I2C_MASTER);
     Serial.print(I2C_SLAVE);
-    Serial.println(x);
+*/    Serial.println(x);
 
     x++;
   }

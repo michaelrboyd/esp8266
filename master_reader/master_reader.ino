@@ -17,6 +17,8 @@
 const int16_t I2C_MASTER = 0x42;
 const int16_t I2C_SLAVE = 0x08;
 
+char char_msg[8];
+
 void setup() {
   Serial.begin(115200);  // start serial for output
   Wire.begin(SDA_PIN, SCL_PIN, I2C_MASTER);        // join i2c bus (address optional for master)
@@ -26,12 +28,21 @@ void loop() {
   using periodic = esp8266::polledTimeout::periodicMs;
   static periodic nextPing(1000);
 
+
+
   if (nextPing) {
     Wire.requestFrom(I2C_SLAVE, 6);    // request 6 bytes from slave device #8
+    byte index = 0;  //character counter
 
     while (Wire.available()) { // slave may send less than requested
-      char c = Wire.read(); // receive a byte as character
-      Serial.print(c);         // print the character
+      char_msg[index] = Wire.read(); // receive a byte as character
+      Serial.print(char_msg[index]);         // print the character
+      index++;
     }
+   Serial.print("ESP8266..Master Reader..");
+   for( int i = 0; i< sizeof(char_msg); i++) {
+     Serial.print(char_msg[i]);             // print the character
+   }
+     Serial.println(".");
   }
 }
